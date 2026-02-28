@@ -5,13 +5,13 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth";
 const Workspace = () => {
   const navigate = useNavigate();
-  const [auth,setAuth] = useAuth();
+  const [auth, setAuth] = useAuth();
   console.log(auth);
   useEffect(() => {
     if (!auth?.token) {
       navigate("/login")
     }
-  }, [auth?.token,navigate]);
+  }, [auth?.token, navigate]);
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -21,31 +21,51 @@ const Workspace = () => {
     localStorage.removeItem("auth");
   }
   return (
-    <>
-      <nav className="flex p-3 text-white justify-between items-center font-bold font-mono bg-black">
-        <div className="flex items-center cursor-pointer w-1/3 gap-3 ">
-          <span className="border-2 border-lightgreen hover:border-white transition duration-500 p-2 rounded-lg">
-          {auth?.user ? `${auth.user.name}'s Workspace` : navigate("/login")}
-          </span>
-          <button className="border-2 border-lightgreen hover:border-white transition duration-500 p-2 rounded-lg">
-            <NavLink className="flex text-center items-center gap-2" to="/main">
-              <span>Create New </span>
-              <span>+</span>
-            </NavLink>
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#0f172a] to-black text-white">
+
+      {/* Navbar */}
+      <nav className="flex px-6 py-3 justify-between items-center font-mono backdrop-blur-md bg-white/5 border-b border-white/10 shadow-lg">
+
+        {/* Left Section */}
+        <div className="flex items-center gap-4">
+          <div className="px-4 py-2 rounded-lg bg-white/10 border border-white/10 shadow hover:bg-white/20 transition">
+            <span className="text-sm">
+              {auth?.user?.name
+                ? `${auth.user.name}'s Workspace`
+                : "Workspace"}
+            </span>
+          </div>
+
+          <NavLink
+            to="/main"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-sm shadow-md hover:scale-105 hover:shadow-[0_0_10px_rgba(34,197,94,0.6)] transition"
+          >
+            + Create New
+          </NavLink>
         </div>
-        <div className="flex items-center justify-end gap-5 text-md w-1/3">
-          <NavLink className="text-xm hover:text-lightgreen" to="/">
+
+        {/* Right Section */}
+        <div className="flex items-center gap-6 text-sm">
+          <NavLink
+            to="/"
+            className="hover:text-cyan-400 transition"
+          >
             Home
           </NavLink>
-          <button className="border-2 border-lightgreen hover:border-white transition duration-500 p-2 rounded-lg w-20">
-            <NavLink className="" to="/" onClick={handleLogout}>
-              Logout
-            </NavLink>
+
+          <button
+            onClick={() => {
+              handleLogout();
+              navigate("/");
+            }}
+            className="px-4 py-2 rounded-lg border border-red-400 text-red-400 hover:bg-red-500 hover:text-white hover:shadow-[0_0_10px_rgba(239,68,68,0.6)] transition"
+          >
+            Logout
           </button>
         </div>
       </nav>
-    </>
+
+    </div>
   );
 };
 export default Workspace;
